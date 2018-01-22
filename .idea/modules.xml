@@ -4,8 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://C:\Users\Lucas Marsol\Desktop\MPOO\SpudyProject-master\SpudyProject-master\App\spudydir\app\app.iml" filepath="C:\Users\Lucas Marsol\Desktop\MPOO\SpudyProject-master\SpudyProject-master\App\spudydir\app\app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/spudydir.iml" filepath="$PROJECT_DIR$/spudydir.iml" />
       <module fileurl="file://C:\Users\Lucas Marsol\Desktop\MPOO\SpudyProject-master\SpudyProject-master\App\spudydir\spudydir.iml" filepath="C:\Users\Lucas Marsol\Desktop\MPOO\SpudyProject-master\SpudyProject-master\App\spudydir\spudydir.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spudydirBeta.iml" filepath="$PROJECT_DIR$/spudydirBeta.iml" />
     </modules>
   </component>
 </project>
