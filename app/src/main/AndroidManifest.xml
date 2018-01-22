@@ -59,7 +59,11 @@
             android:label="@string/sp_title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activity.CriarTurmaActivity" />
-        <activity android:name=".activity.AdicionarTurmaActivity"></activity>
+        <activity android:name=".activity.AdicionarTurmaActivity" />
+        <activity
+            android:name=".activity.ChatActivity"
+            android:label="@string/title_activity_chat"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
