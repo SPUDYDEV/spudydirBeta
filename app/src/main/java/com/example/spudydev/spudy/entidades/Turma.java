@@ -1,5 +1,9 @@
 package com.example.spudydev.spudy.entidades;
 
+import android.support.annotation.NonNull;
+
+import com.example.spudydev.spudy.infraestrutura.persistencia.AcessoFirebase;
+import com.example.spudydev.spudy.infraestrutura.utils.MD5;
 import com.example.spudydev.spudy.usuario.dominio.Usuario;
 import com.example.spudydev.spudy.usuario.professor.dominio.Professor;
 
@@ -30,8 +34,6 @@ public class Turma {
         this.cargaHorariaDiaria = cargaHorariaDiaria;
     }
 
-    private ArrayList<Usuario> alunos;
-
     public String getNome() {
         return nome;
     }
@@ -48,36 +50,36 @@ public class Turma {
         this.professor = professor;
     }
 
-    public ArrayList<Usuario> getAlunos() {
-        return alunos;
-    }
-
-    public void setAlunos(ArrayList<Usuario> alunos) {
-        this.alunos = alunos;
-    }
-
     //Esta chamada vai ser feita pelo PROFESSOR
 
-    public HashMap<String, Object> toMapTurma(){
+    private HashMap<String, Object> toMapTurma(){
         HashMap<String, Object> hashMapTurma = new HashMap<>();
         hashMapTurma.put("nomeTurma", getNome());
         hashMapTurma.put("cargaHorariaDiaria", getCargaHorariaDiaria());
 
         return hashMapTurma;
     }
+    //Professor Cria turma
+    public String criarTurma(String nomedaturma, String cargaHorariaDiaria){
+        //Adicionar verificação turma com mesmo nome
+        this.setNome(nomedaturma);
+        this.setCargaHorariaDiaria(cargaHorariaDiaria);
 
-    /*
-    public void entrarTurma(String codigoTurma){
         String uid = AcessoFirebase.getFirebaseAutenticacao().getCurrentUser().getUid();
-        //Se ligar se o cara colocar o mesmo nome.
-        AcessoFirebase.getFirebase().child("aluno").child(uid).child("turmas").setValue(codigoTurma);
-    }
+        String codigoTurma = MD5.hashCodigoTurma(uid, nomedaturma);
 
-    public void salvarTurmaMonitor(String codigoTurma){
+        //Salvando a turma na árvore turma
+        AcessoFirebase.getFirebase().child("turma").child(codigoTurma).setValue(this.toMapTurma());
+        //Salvando a turma na árvore professor
+        AcessoFirebase.getFirebase().child("professor").child(uid).child("turmasMinistradas").child(codigoTurma).setValue(codigoTurma);
+
+        return codigoTurma;
+    }
+    //Professor Criar turma
+    public void adicionarTurma(String codigoTurma){
+        //Adicionar verificação se aluno já esta na turma
         String uid = AcessoFirebase.getFirebaseAutenticacao().getCurrentUser().getUid();
-        //Se ligar se o cara colocar o mesmo nome.
-        AcessoFirebase.getFirebase().child("aluno").child(uid).child("turmasMonitor").setValue(codigoTurma);
+        AcessoFirebase.getFirebase().child("aluno").child(uid).child("turmas").child(codigoTurma).setValue(codigoTurma);
+        AcessoFirebase.getFirebase().child("turma").child(codigoTurma).child("alunosDaTurma").child(uid).setValue(uid);
     }
-    */
-
 }

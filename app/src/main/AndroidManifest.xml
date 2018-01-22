@@ -62,7 +62,8 @@
             android:name=".perfil.gui.MeuPerfilProfessorActivity"
             android:label="@string/sp_title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".TurmaActivity"></activity>
+        <activity android:name=".activity.CriarTurmaActivity" />
+        <activity android:name=".activity.AdicionarTurmaActivity"></activity>
     </application>
 
 </manifest>

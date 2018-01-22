@@ -13,7 +13,6 @@ import com.example.spudydev.spudy.infraestrutura.negocio.Login;
 import com.example.spudydev.spudy.pessoa.gui.ResgatarSenhaEmailActivity;
 import com.example.spudydev.spudy.registro.gui.RegistroActivity;
 import com.example.spudydev.spudy.registro.negocio.VerificaConexao;
-import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -27,7 +26,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
-        FirebaseAuth.getInstance().signOut();
 
         edtEmail = (EditText) findViewById(R.id.edtEmail);
         edtSenha = (EditText) findViewById(R.id.edtSenha);

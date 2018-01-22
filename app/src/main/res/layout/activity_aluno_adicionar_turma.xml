@@ -37,7 +37,7 @@
                 android:gravity="center"/>
 
             <EditText
-                android:id="@+id/digitando_codigo_da_turma"
+                android:id="@+id/edtCodigoTurma"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginTop="30dp"
@@ -45,12 +45,13 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/border_branco"
-                android:text="@string/sp_hint_codigo_da_turma"
+                android:hint="@string/sp_hint_codigo_da_turma"
                 android:drawableLeft="@drawable/ic_adicionar"
                 android:drawablePadding="10dp"
                 android:paddingLeft="15dp"/>
 
             <Button
+                android:id="@+id/btnAdicionarTurma"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_gravity="center"

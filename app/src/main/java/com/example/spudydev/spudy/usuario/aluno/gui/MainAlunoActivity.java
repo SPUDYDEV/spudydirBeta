@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,15 +15,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.spudydev.spudy.activity.AdicionarTurmaActivity;
+import com.example.spudydev.spudy.activity.CriarTurmaActivity;
 import com.example.spudydev.spudy.infraestrutura.gui.LoginActivity;
 import com.example.spudydev.spudy.infraestrutura.persistencia.AcessoFirebase;
 import com.example.spudydev.spudy.perfil.gui.MeuPerfilAlunoActivity;
 import com.example.spudydev.spudy.perfil.negocio.DadosMenuLateral;
 import com.example.spudydev.spudy.R;
+import com.example.spudydev.spudy.usuario.professor.gui.MainProfessorActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -83,7 +88,18 @@ public class MainAlunoActivity extends AppCompatActivity
             }
         });
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabButtonAdicionarTurma);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainAlunoActivity.this, AdicionarTurmaActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //ListView
         lvTurmaAluno = findViewById(R.id.lvTurmasAluno);
+        //Carregar as turmas
         carregaTurmaAluno();
 
     }
@@ -188,9 +204,15 @@ public class MainAlunoActivity extends AppCompatActivity
         });
     }
 
+
     public void setListViewTurmas(ArrayList<String> listaTurmaAluno){
         ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listaTurmaAluno);
         lvTurmaAluno.setAdapter(itemsAdapter);
+    }
+
+    public void abrirTelaAdicionarTurma(){
+        Intent intent = new Intent(MainAlunoActivity.this, AdicionarTurmaActivity.class);
+        startActivity(intent);
     }
 
     public void abrirTelaLoginActivity(){

@@ -21,7 +21,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.spudydev.spudy.R;
-import com.example.spudydev.spudy.TurmaActivity;
+import com.example.spudydev.spudy.activity.CriarTurmaActivity;
 import com.example.spudydev.spudy.activity.DisciplinaActivity;
 import com.example.spudydev.spudy.infraestrutura.gui.LoginActivity;
 import com.example.spudydev.spudy.infraestrutura.persistencia.AcessoFirebase;
@@ -61,16 +61,6 @@ public class MainProfessorActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabButtonCriarTurma);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainProfessorActivity.this, TurmaActivity.class);
-                startActivity(intent);
-            }
-        });
-
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         //Chamando a classe para setar nome e email do nav_header_menu_professor
         dadosMenuDAO.resgatarUsuario(navigationView, user);
@@ -98,6 +88,15 @@ public class MainProfessorActivity extends AppCompatActivity
                     default:
                         return false;
                 }
+            }
+        });
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabButtonCriarTurma);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainProfessorActivity.this, CriarTurmaActivity.class);
+                startActivity(intent);
             }
         });
 
