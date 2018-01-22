@@ -12,8 +12,8 @@ import android.widget.Toast;
 import com.example.spudydev.spudy.R;
 import com.example.spudydev.spudy.infraestrutura.persistencia.AcessoFirebase;
 import com.example.spudydev.spudy.perfil.gui.MeuPerfilAlunoActivity;
-import com.example.spudydev.spudy.pessoa.utils.SenhaException;
 import com.example.spudydev.spudy.perfil.gui.MeuPerfilProfessorActivity;
+import com.example.spudydev.spudy.registro.negocio.VerificaConexao;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -25,6 +25,7 @@ public class AlterarSenhaActivity extends AppCompatActivity {
     private EditText edt_alterarSenhaAntiga;
     private EditText edt_alterarSenhaNova;
     private EditText edt_alterarSenhaNovaConfirma;
+    private VerificaConexao verificaConexao;
     private boolean verifica;
     private String tipoConta = getIntent().getStringExtra("tipoConta");
 
@@ -39,13 +40,19 @@ public class AlterarSenhaActivity extends AppCompatActivity {
         edt_alterarSenhaNova = findViewById(R.id.edtAlterarSenhaNova);
         edt_alterarSenhaNovaConfirma = findViewById(R.id.edtAlterarSenhaNovaConfirma);
         Button btn_alterarSenhaPerfil = findViewById(R.id.btn_AlterarSenhaPerfil);
+        verificaConexao = new VerificaConexao(this);
 
         btn_alterarSenhaPerfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (validarAlteracaoSenha()) {
-                    Toast.makeText(AlterarSenhaActivity.this, "Senha alterada com sucesso.", Toast.LENGTH_SHORT).show();
-                    abrirTelaMeuPerfil();
+                if (verificaConexao.estaConectado()) {
+                    if (verificaCampo()) {
+                        alteraSenha();
+                        Toast.makeText(AlterarSenhaActivity.this, "Senha alterada com sucesso.", Toast.LENGTH_SHORT).show();
+                        abrirTelaMeuPerfil();
+                    }
+                }else{
+                    Toast.makeText(getApplicationContext(), R.string.sp_conexao_falha, Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -53,7 +60,7 @@ public class AlterarSenhaActivity extends AppCompatActivity {
 
     }
 
-    public boolean validarAlteracaoSenha() {
+    public boolean verificaCampo() {
 
         if (edt_alterarSenhaAntiga.getText().toString().isEmpty()){
             edt_alterarSenhaAntiga.setError(getString(R.string.sp_excecao_campo_vazio));
@@ -79,7 +86,10 @@ public class AlterarSenhaActivity extends AppCompatActivity {
             edt_alterarSenhaNovaConfirma.setError(getString(R.string.sp_excecao_senhas_iguais));
             return false;
         }
-        verifica = true;
+        return true;
+    }
+
+    private void alteraSenha() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user.getEmail() != null){
             AcessoFirebase.getFirebaseAutenticacao().signInWithEmailAndPassword(user.getEmail(),edt_alterarSenhaAntiga.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -88,14 +98,12 @@ public class AlterarSenhaActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         FirebaseUser user = AcessoFirebase.getFirebaseAutenticacao().getCurrentUser();
                         user.updatePassword(edt_alterarSenhaNova.getText().toString());
-                    } else {
-                        verifica = false;
                     }
                 }
             });
         }
-        return verifica;
     }
+
     public void abrirTelaMeuPerfil (){
         if (tipoConta.equals("aluno")) {
             Intent intent = new Intent(this, MeuPerfilAlunoActivity.class);

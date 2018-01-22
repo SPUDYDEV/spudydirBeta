@@ -29,24 +29,36 @@ public class AlterarNomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alterar_nome);
 
-        verificaConexao = new VerificaConexao(this);
         edt_alterarNome = (EditText) findViewById(R.id.edt_AlterarNome);
         btn_alterarNome = (Button) findViewById(R.id.btn_AlterarNome);
+        verificaConexao = new VerificaConexao(this);
 
         btn_alterarNome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (verificaConexao.estaConectado()) {
-                    DatabaseReference referencia = AcessoFirebase.getFirebase().child("pessoa").child(user.getUid()).child("nome");
-                    referencia.setValue(edt_alterarNome.getText().toString());
-                    Toast.makeText(AlterarNomeActivity.this, "Nome alterado com sucesso.", Toast.LENGTH_SHORT).show();
-                    abrirTelaMeuPerfilActivity();
+                    if (verificaCampo()) {
+                        alterarNome();
+                        Toast.makeText(AlterarNomeActivity.this, "Nome alterado com sucesso.", Toast.LENGTH_SHORT).show();
+                        abrirTelaMeuPerfilActivity();
+                    }
                 } else {
                     Toast.makeText(AlterarNomeActivity.this, R.string.sp_conexao_falha, Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
+    private boolean verificaCampo(){
+        if (edt_alterarNome.getText().toString().isEmpty()){
+            edt_alterarNome.setError(getString(R.string.sp_excecao_campo_vazio));
+            return false;
+        }
+        return true;
+    }
+    private void alterarNome() {
+        AcessoFirebase.getFirebase().child("pessoa").child(user.getUid()).child("nome").setValue(edt_alterarNome.getText().toString());
+    }
+
     public void abrirTelaMeuPerfilActivity (){
         if (tipoConta.equals("aluno")) {
             Intent intent = new Intent(this, MeuPerfilAlunoActivity.class);

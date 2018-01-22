@@ -215,7 +215,6 @@ public class MeuPerfilProfessorActivity extends AppCompatActivity
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Pessoa pessoa = dataSnapshot.child("pessoa").child(user.getUid()).getValue(Pessoa.class);
                 Usuario usuario = dataSnapshot.child("usuario").child(user.getUid()).getValue(Usuario.class);
-                Auxiliar.criarToast(getApplicationContext(), usuario.getInstituicao());
                 if (usuario != null && pessoa!= null){
                     nomeConsulta.setText(pessoa.getNome());
                     emailConsulta.setText(usuario.getEmail());

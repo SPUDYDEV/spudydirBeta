@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.spudydev.spudy.R;
 import com.example.spudydev.spudy.infraestrutura.persistencia.AcessoFirebase;
@@ -34,11 +35,18 @@ public class AlterarEmailActivity extends AppCompatActivity {
         edt_alterarEmail = (EditText) findViewById(R.id.edt_AlterarEmailPerfil);
         edt_alterarEmailSenha = (EditText) findViewById(R.id.edt_AlterarEmailSenhaPerfil);
         Button btn_alterarEmail = (Button) findViewById(R.id.btn_AlterarEmailPerfil);
+        verificaConexao = new VerificaConexao(this);
 
         btn_alterarEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (verificaCampos()){
+                if (verificaConexao.estaConectado()) {
+                    if (verificaCampos()) {
+                        Toast.makeText(AlterarEmailActivity.this, "Email alterado com sucesso.", Toast.LENGTH_SHORT).show();
+                        abrirTelaMeuPerfilActivity();
+                    }
+                }else{
+                    Toast.makeText(getApplicationContext(), R.string.sp_conexao_falha, Toast.LENGTH_SHORT).show();
                 }
             }
         });

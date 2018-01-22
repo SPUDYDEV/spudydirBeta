@@ -37,19 +37,29 @@ public class AlterarInstituicaoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (verificaConexao.estaConectado()) {
-                    DatabaseReference referencia = AcessoFirebase.getFirebase().child("usuario").child(user.getUid()).child("instituicao");
-                    referencia.setValue(edt_alterarInstituicao.getText().toString());
-                    //Colocar a string do toast em values
-                    Toast.makeText(AlterarInstituicaoActivity.this, R.string.sp_alterar_instituicao_sucesso, Toast.LENGTH_SHORT).show();
-                    abrirTelaMeuPerfilActivity();
-
+                    if (verificaCampo()) {
+                        alterarInstituicao();
+                        Toast.makeText(AlterarInstituicaoActivity.this, R.string.sp_alterar_instituicao_sucesso, Toast.LENGTH_SHORT).show();
+                        abrirTelaMeuPerfilActivity();
+                    }
                 }else{
-                    //Colocar a string do toast em values
-                    Toast.makeText(AlterarInstituicaoActivity.this, R.string.sp_conexao_falha, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.sp_conexao_falha, Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
+
+    private boolean verificaCampo(){
+        if (edt_alterarInstituicao.getText().toString().isEmpty()){
+            edt_alterarInstituicao.setError(getString(R.string.sp_excecao_campo_vazio));
+            return false;
+        }
+        return true;
+    }
+    private void alterarInstituicao() {
+        AcessoFirebase.getFirebase().child("usuario").child(user.getUid()).child("instituicao").setValue(edt_alterarInstituicao.getText().toString());
+    }
+
     public void abrirTelaMeuPerfilActivity (){
         if (tipoConta.equals("aluno")) {
             Intent intent = new Intent(this, MeuPerfilAlunoActivity.class);
