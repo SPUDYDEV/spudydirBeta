@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.example.spudydev.spudy.R;
 import com.example.spudydev.spudy.infraestrutura.persistencia.AcessoFirebase;
+import com.example.spudydev.spudy.perfil.gui.MeuPerfilAlunoActivity;
 import com.example.spudydev.spudy.pessoa.utils.SenhaException;
 import com.example.spudydev.spudy.perfil.gui.MeuPerfilProfessorActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,6 +26,7 @@ public class AlterarSenhaActivity extends AppCompatActivity {
     private EditText edt_alterarSenhaNova;
     private EditText edt_alterarSenhaNovaConfirma;
     private boolean verifica;
+    private String tipoConta = getIntent().getStringExtra("tipoConta");
 
 
     @Override
@@ -41,14 +43,9 @@ public class AlterarSenhaActivity extends AppCompatActivity {
         btn_alterarSenhaPerfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean verificador = validarAlteracaoSenha(edt_alterarSenhaAntiga.getText().toString(), edt_alterarSenhaNova.getText().toString(), edt_alterarSenhaNovaConfirma.getText().toString());
-                try{
-                    if (verificador){
-                        Toast.makeText(AlterarSenhaActivity.this, "Senha alterada com sucesso", Toast.LENGTH_SHORT).show();
-                        abrirTelaMeuPerfilProfessorActivity();
-                    }
-                } catch (SenhaException e){//Assim que o catch parar de capturar a transição de tela será completada
-                    Toast.makeText(AlterarSenhaActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                if (validarAlteracaoSenha()) {
+                    Toast.makeText(AlterarSenhaActivity.this, "Senha alterada com sucesso.", Toast.LENGTH_SHORT).show();
+                    abrirTelaMeuPerfil();
                 }
 
             }
@@ -56,28 +53,28 @@ public class AlterarSenhaActivity extends AppCompatActivity {
 
     }
 
-    public boolean validarAlteracaoSenha(String senhaAntiga, final String senhaNova, final String senhaNovaConfirma) {
+    public boolean validarAlteracaoSenha() {
 
-        if (senhaAntiga.isEmpty()){
+        if (edt_alterarSenhaAntiga.getText().toString().isEmpty()){
             edt_alterarSenhaAntiga.setError(getString(R.string.sp_excecao_campo_vazio));
             return false;
         }
 
-        if (senhaNova.isEmpty()){
+        if (edt_alterarSenhaNova.getText().toString().isEmpty()){
             edt_alterarSenhaNova.setError(getString(R.string.sp_excecao_campo_vazio));
             return false;
         }
 
-        if (senhaNovaConfirma.isEmpty()){
+        if (edt_alterarSenhaNovaConfirma.getText().toString().isEmpty()){
             edt_alterarSenhaNova.setError(getString(R.string.sp_excecao_campo_vazio));
             return false;
         }
 
-        if (senhaNova.length() < 6){
+        if (edt_alterarSenhaNova.getText().toString().length() < 6){
             edt_alterarSenhaNova.setError(getString(R.string.sp_excecao_senha));
             return false;
         }
-        if (!senhaNova.equals(senhaNovaConfirma)){
+        if (!edt_alterarSenhaNova.getText().toString().equals(edt_alterarSenhaNovaConfirma.getText().toString())){
             edt_alterarSenhaNova.setError(getString(R.string.sp_excecao_senhas_iguais));
             edt_alterarSenhaNovaConfirma.setError(getString(R.string.sp_excecao_senhas_iguais));
             return false;
@@ -85,13 +82,13 @@ public class AlterarSenhaActivity extends AppCompatActivity {
         verifica = true;
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user.getEmail() != null){
-            AcessoFirebase.getFirebaseAutenticacao().signInWithEmailAndPassword(user.getEmail(),senhaAntiga).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            AcessoFirebase.getFirebaseAutenticacao().signInWithEmailAndPassword(user.getEmail(),edt_alterarSenhaAntiga.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                            FirebaseUser user = AcessoFirebase.getFirebaseAutenticacao().getCurrentUser();
-                            user.updatePassword(senhaNova);
-                    }else{
+                        FirebaseUser user = AcessoFirebase.getFirebaseAutenticacao().getCurrentUser();
+                        user.updatePassword(edt_alterarSenhaNova.getText().toString());
+                    } else {
                         verifica = false;
                     }
                 }
@@ -99,9 +96,15 @@ public class AlterarSenhaActivity extends AppCompatActivity {
         }
         return verifica;
     }
-
-    public void abrirTelaMeuPerfilProfessorActivity() throws SenhaException{
-        Intent intentAbrirTelaMeuPerfilProfessorActicity = new Intent(AlterarSenhaActivity.this, MeuPerfilProfessorActivity.class);
-        startActivity(intentAbrirTelaMeuPerfilProfessorActicity);
+    public void abrirTelaMeuPerfil (){
+        if (tipoConta.equals("aluno")) {
+            Intent intent = new Intent(this, MeuPerfilAlunoActivity.class);
+            startActivity(intent);
+            finish();
+        }else{
+            Intent intent = new Intent(this, MeuPerfilProfessorActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 }

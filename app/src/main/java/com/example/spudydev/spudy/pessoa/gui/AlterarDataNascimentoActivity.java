@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.example.spudydev.spudy.perfil.gui.MeuPerfilAlunoActivity;
 import com.example.spudydev.spudy.infraestrutura.persistencia.AcessoFirebase;
 import com.example.spudydev.spudy.R;
+import com.example.spudydev.spudy.perfil.gui.MeuPerfilProfessorActivity;
 import com.example.spudydev.spudy.registro.negocio.VerificaConexao;
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
 import com.github.rtoshiro.util.format.text.MaskTextWatcher;
@@ -22,6 +23,7 @@ public class AlterarDataNascimentoActivity extends AppCompatActivity {
     private EditText edt_alterarDataNascimento;
     private VerificaConexao verificaConexao;
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private String tipoConta = getIntent().getStringExtra("tipoConta");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +60,14 @@ public class AlterarDataNascimentoActivity extends AppCompatActivity {
         });
     }
     public void abrirTelaMeuPerfilActivity (){
-        Intent intentAbrirTelaMeuPerfilActivity  = new Intent(this, MeuPerfilAlunoActivity.class);
-        startActivity(intentAbrirTelaMeuPerfilActivity );
-        finish();
+        if (tipoConta.equals("aluno")) {
+            Intent intent = new Intent(this, MeuPerfilAlunoActivity.class);
+            startActivity(intent);
+            finish();
+        }else{
+            Intent intent = new Intent(this, MeuPerfilProfessorActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 }

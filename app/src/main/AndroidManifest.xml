@@ -33,10 +33,6 @@
             android:name=".perfil.gui.MeuPerfilAlunoActivity"
             android:label="@string/sp_title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activity.AlterarDadosCadastraisActivity"
-            android:label="@string/sp_title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".pessoa.gui.AlterarNomeActivity" />
         <activity android:name=".pessoa.gui.AlterarDataNascimentoActivity" />
         <activity android:name=".pessoa.gui.AlterarInstituicaoActivity" />

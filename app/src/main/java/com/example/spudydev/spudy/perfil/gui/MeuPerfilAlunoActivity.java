@@ -24,10 +24,13 @@ import com.example.spudydev.spudy.infraestrutura.persistencia.AcessoFirebase;
 import com.example.spudydev.spudy.perfil.negocio.DadosMenuLateral;
 import com.example.spudydev.spudy.pessoa.dominio.Pessoa;
 import com.example.spudydev.spudy.pessoa.gui.AlterarDataNascimentoActivity;
+import com.example.spudydev.spudy.pessoa.gui.AlterarEmailActivity;
 import com.example.spudydev.spudy.pessoa.gui.AlterarInstituicaoActivity;
 import com.example.spudydev.spudy.pessoa.gui.AlterarNomeActivity;
 import com.example.spudydev.spudy.pessoa.gui.AlterarSenhaActivity;
+import com.example.spudydev.spudy.usuario.aluno.gui.MainAlunoActivity;
 import com.example.spudydev.spudy.usuario.dominio.Usuario;
+import com.example.spudydev.spudy.usuario.professor.gui.MainProfessorActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -63,13 +66,13 @@ public class MeuPerfilAlunoActivity extends AppCompatActivity
         Button btnInformacao = (Button) findViewById(R.id.btnInformacaoPerfilAluno);
         //fim instancias
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.sp_navigation_drawer_open, R.string.sp_navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         //setando email e nome do header
@@ -98,7 +101,7 @@ public class MeuPerfilAlunoActivity extends AppCompatActivity
         emailConsulta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MeuPerfilAlunoActivity.this, "Em construção...", Toast.LENGTH_SHORT).show();
+                abrirTelaAlterarEmailActivity();
             }
         });
 
@@ -132,10 +135,11 @@ public class MeuPerfilAlunoActivity extends AppCompatActivity
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.nav_meu_perfil:
+                        drawer.closeDrawers();
                         return true;
                     case R.id.nav_turmas:
                         //Activity de turmas
-                        Toast.makeText(MeuPerfilAlunoActivity.this, "Em construção", Toast.LENGTH_SHORT).show();
+                        abrirTelaMainAlunoActivity();
                         return true;
                     case R.id.nav_sair:
                         //sair
@@ -252,27 +256,53 @@ public class MeuPerfilAlunoActivity extends AppCompatActivity
     //Intent Alterar Nome
     public void abrirTelaAlteraNomeActivity(){
         Intent intentAbrirTelaAlteraNomeActivity = new Intent(MeuPerfilAlunoActivity.this, AlterarNomeActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("tipoConta", "aluno");
+        intentAbrirTelaAlteraNomeActivity.putExtras(bundle);
         startActivity(intentAbrirTelaAlteraNomeActivity);
     }
 
     //Intent Alterar Data
     public void abrirTelaAlteraDataNascimentoActivity(){
         Intent intentAbrirTelaAlteraDataNascimentoActivity = new Intent(MeuPerfilAlunoActivity.this, AlterarDataNascimentoActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("tipoConta", "aluno");
+        intentAbrirTelaAlteraDataNascimentoActivity.putExtras(bundle);
         startActivity(intentAbrirTelaAlteraDataNascimentoActivity);
     }
     //Intent Alterar Instituicao
     public void abrirTelaAlteraInstituicaoActivity(){
         Intent intentAbrirTelaAlteraInstituicaoActivity = new Intent(MeuPerfilAlunoActivity.this, AlterarInstituicaoActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("tipoConta", "aluno");
+        intentAbrirTelaAlteraInstituicaoActivity.putExtras(bundle);
         startActivity(intentAbrirTelaAlteraInstituicaoActivity);
     }
+
+    //Intent alterar email();
+    public  void  abrirTelaAlterarEmailActivity(){
+        Intent intent = new Intent(MeuPerfilAlunoActivity.this, AlterarEmailActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("tipoConta", "aluno");
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
     //Intent Alterar Senha
     public void abrirTelaAlterarSenhaActivity(){
         Intent intentAbrirTelaAlteraSenhaActivity = new Intent(MeuPerfilAlunoActivity.this, AlterarSenhaActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString("email", user.getEmail());
+        bundle.putString("tipoConta", "aluno");
         intentAbrirTelaAlteraSenhaActivity.putExtras(bundle);
         startActivity(intentAbrirTelaAlteraSenhaActivity);
     }
+
+    //Intent Alterar MainProfessor
+    public void abrirTelaMainAlunoActivity(){
+        Intent intent= new Intent(MeuPerfilAlunoActivity.this, MainAlunoActivity.class);
+        startActivity(intent);
+    }
+
 
     //Intent Tela Login
     public void abrirTelaLoginActivity(){
